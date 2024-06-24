@@ -63,11 +63,11 @@ EduDomain est une application web conçue pour simplifier la gestion des réside
 5. **Lancer l'application** : (Modifier les ports comme vous le souhaitez dans les fichiers .env)
    ```bash
    # Pour le backend
-   cd nodejs-express-api
+   cd ./nodejs-express-api
    npm start
 
    # Pour le frontend
-   cd ../frontend
+   cd ./frontend
    npm start
    ```
 
