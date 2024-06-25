@@ -77,6 +77,7 @@ class DemandeLogement extends BaseModel {
 			'email_client', 
 			'etat_demande', 
 			'id_type_chambre', 
+			'type_chambre',
 			'id', 
 			'id_user', 
 			'id_residence'

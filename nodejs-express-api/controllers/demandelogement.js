@@ -38,6 +38,263 @@ router.get(['/', '/index/:fieldname?/:fieldvalue?'], async (req, res) => {
 			where[DB.op.or] = searchFields;
 			replacements.search = `%${search}%`;
 		}
+		where['etat_demande'] = "soumise";
+		let allowedRoles = ["admin", "responsable_residence", "client", "hotesse_accueil", "charge_clientele"];
+		let userRole = req.userRoleName;
+		if(!allowedRoles.includes(userRole)){
+			where['id_user'] = req.user.id; //filter only current records
+		}
+		
+		if(queryFilters.length){
+			where[DB.op.and] = queryFilters;
+		}
+		query.raw = true;
+		query.where = where;
+		query.replacements = replacements;
+		query.order = DB.getOrderBy(req, 'id', 'desc');
+		if(req.query.export){
+			query.attributes = DB.DemandeLogement.exportListFields();
+			let records = await DB.DemandeLogement.findAll(query);
+			return exportListPage(records, req, res)
+		}
+		query.attributes = DB.DemandeLogement.listFields();
+		let page = parseInt(req.query.page) || 1;
+		let limit = parseInt(req.query.limit) || 10;
+		let result = await DB.DemandeLogement.paginate(query, page, limit);
+		return res.ok(result);
+	}
+	catch(err) {
+		return res.serverError(err);
+	}
+});
+
+/**
+ * Route to list demandelogement records
+ * @GET /demandelogement/index/{fieldname}/{fieldvalue}
+ */
+router.get(['/', '/soumises/:fieldname?/:fieldvalue?'], async (req, res) => {  
+	try{
+		const query = {};
+		let queryFilters = [];
+		let where = {};
+		let replacements = {};
+		let fieldName = req.params.fieldname;
+		let fieldValue = req.params.fieldvalue;
+		
+		if (fieldName){
+			queryFilters.push(DB.filterBy(fieldName, fieldValue));
+		}
+		let search = req.query.search;
+		if(search){
+			let searchFields = DB.DemandeLogement.searchFields();
+			where[DB.op.or] = searchFields;
+			replacements.search = `%${search}%`;
+		}
+		let allowedRoles = ["admin", "responsable_residence", "client", "hotesse_accueil", "charge_clientele"];
+		let userRole = req.userRoleName;
+		if(!allowedRoles.includes(userRole)){
+			where['id_user'] = req.user.id; //filter only current records
+		}
+		
+		if(queryFilters.length){
+			where[DB.op.and] = queryFilters;
+		}
+		query.raw = true;
+		query.where = where;
+		query.replacements = replacements;
+		query.order = DB.getOrderBy(req, 'id', 'desc');
+		if(req.query.export){
+			query.attributes = DB.DemandeLogement.exportListFields();
+			let records = await DB.DemandeLogement.findAll(query);
+			return exportListPage(records, req, res)
+		}
+		query.attributes = DB.DemandeLogement.listFields();
+		let page = parseInt(req.query.page) || 1;
+		let limit = parseInt(req.query.limit) || 10;
+		let result = await DB.DemandeLogement.paginate(query, page, limit);
+		return res.ok(result);
+	}
+	catch(err) {
+		return res.serverError(err);
+	}
+});
+
+/**
+ * Route to list demandelogement records
+ * @GET /demandelogement/index/{fieldname}/{fieldvalue}
+ */
+router.get(['/', '/pending/:fieldname?/:fieldvalue?'], async (req, res) => {  
+	try{
+		const query = {};
+		let queryFilters = [];
+		let where = {};
+		let replacements = {};
+		let fieldName = req.params.fieldname;
+		let fieldValue = req.params.fieldvalue;
+		
+		if (fieldName){
+			queryFilters.push(DB.filterBy(fieldName, fieldValue));
+		}
+		let search = req.query.search;
+		if(search){
+			let searchFields = DB.DemandeLogement.searchFields();
+			where[DB.op.or] = searchFields;
+			replacements.search = `%${search}%`;
+		}
+		let allowedRoles = ["admin", "responsable_residence", "client", "hotesse_accueil", "charge_clientele"];
+		let userRole = req.userRoleName;
+		if(!allowedRoles.includes(userRole)){
+			where['id_user'] = req.user.id; //filter only current records
+		}
+		
+		if(queryFilters.length){
+			where[DB.op.and] = queryFilters;
+		}
+		query.raw = true;
+		query.where = where;
+		query.replacements = replacements;
+		query.order = DB.getOrderBy(req, 'id', 'desc');
+		if(req.query.export){
+			query.attributes = DB.DemandeLogement.exportListFields();
+			let records = await DB.DemandeLogement.findAll(query);
+			return exportListPage(records, req, res)
+		}
+		query.attributes = DB.DemandeLogement.listFields();
+		let page = parseInt(req.query.page) || 1;
+		let limit = parseInt(req.query.limit) || 10;
+		let result = await DB.DemandeLogement.paginate(query, page, limit);
+		return res.ok(result);
+	}
+	catch(err) {
+		return res.serverError(err);
+	}
+});
+
+/**
+ * Route to list demandelogement records
+ * @GET /demandelogement/index/{fieldname}/{fieldvalue}
+ */
+router.get(['/', '/valides/:fieldname?/:fieldvalue?'], async (req, res) => {  
+	try{
+		const query = {};
+		let queryFilters = [];
+		let where = {};
+		let replacements = {};
+		let fieldName = req.params.fieldname;
+		let fieldValue = req.params.fieldvalue;
+		
+		if (fieldName){
+			queryFilters.push(DB.filterBy(fieldName, fieldValue));
+		}
+		let search = req.query.search;
+		if(search){
+			let searchFields = DB.DemandeLogement.searchFields();
+			where[DB.op.or] = searchFields;
+			replacements.search = `%${search}%`;
+		}
+		let allowedRoles = ["admin", "responsable_residence", "client", "hotesse_accueil", "charge_clientele"];
+		let userRole = req.userRoleName;
+		if(!allowedRoles.includes(userRole)){
+			where['id_user'] = req.user.id; //filter only current records
+		}
+		
+		if(queryFilters.length){
+			where[DB.op.and] = queryFilters;
+		}
+		query.raw = true;
+		query.where = where;
+		query.replacements = replacements;
+		query.order = DB.getOrderBy(req, 'id', 'desc');
+		if(req.query.export){
+			query.attributes = DB.DemandeLogement.exportListFields();
+			let records = await DB.DemandeLogement.findAll(query);
+			return exportListPage(records, req, res)
+		}
+		query.attributes = DB.DemandeLogement.listFields();
+		let page = parseInt(req.query.page) || 1;
+		let limit = parseInt(req.query.limit) || 10;
+		let result = await DB.DemandeLogement.paginate(query, page, limit);
+		return res.ok(result);
+	}
+	catch(err) {
+		return res.serverError(err);
+	}
+});
+
+/**
+ * Route to list demandelogement records
+ * @GET /demandelogement/index/{fieldname}/{fieldvalue}
+ */
+router.get(['/', '/effectif/:fieldname?/:fieldvalue?'], async (req, res) => {  
+	try{
+		const query = {};
+		let queryFilters = [];
+		let where = {};
+		let replacements = {};
+		let fieldName = req.params.fieldname;
+		let fieldValue = req.params.fieldvalue;
+		
+		if (fieldName){
+			queryFilters.push(DB.filterBy(fieldName, fieldValue));
+		}
+		let search = req.query.search;
+		if(search){
+			let searchFields = DB.DemandeLogement.searchFields();
+			where[DB.op.or] = searchFields;
+			replacements.search = `%${search}%`;
+		}
+		let allowedRoles = ["admin", "responsable_residence", "client", "hotesse_accueil", "charge_clientele"];
+		let userRole = req.userRoleName;
+		if(!allowedRoles.includes(userRole)){
+			where['id_user'] = req.user.id; //filter only current records
+		}
+		
+		if(queryFilters.length){
+			where[DB.op.and] = queryFilters;
+		}
+		query.raw = true;
+		query.where = where;
+		query.replacements = replacements;
+		query.order = DB.getOrderBy(req, 'id', 'desc');
+		if(req.query.export){
+			query.attributes = DB.DemandeLogement.exportListFields();
+			let records = await DB.DemandeLogement.findAll(query);
+			return exportListPage(records, req, res)
+		}
+		query.attributes = DB.DemandeLogement.listFields();
+		let page = parseInt(req.query.page) || 1;
+		let limit = parseInt(req.query.limit) || 10;
+		let result = await DB.DemandeLogement.paginate(query, page, limit);
+		return res.ok(result);
+	}
+	catch(err) {
+		return res.serverError(err);
+	}
+});
+
+/**
+ * Route to list demandelogement records
+ * @GET /demandelogement/index/{fieldname}/{fieldvalue}
+ */
+router.get(['/', '/rejected/:fieldname?/:fieldvalue?'], async (req, res) => {  
+	try{
+		const query = {};
+		let queryFilters = [];
+		let where = {};
+		let replacements = {};
+		let fieldName = req.params.fieldname;
+		let fieldValue = req.params.fieldvalue;
+		
+		if (fieldName){
+			queryFilters.push(DB.filterBy(fieldName, fieldValue));
+		}
+		let search = req.query.search;
+		if(search){
+			let searchFields = DB.DemandeLogement.searchFields();
+			where[DB.op.or] = searchFields;
+			replacements.search = `%${search}%`;
+		}
+		where['etat_demande'] = "en attente%";
 		let allowedRoles = ["admin", "responsable_residence", "client", "hotesse_accueil", "charge_clientele"];
 		let userRole = req.userRoleName;
 		if(!allowedRoles.includes(userRole)){

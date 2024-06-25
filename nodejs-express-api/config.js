@@ -25,8 +25,8 @@ export default {
 		ordertype: "DESC"
 	},
 	mail: {
-		username:"7301fd003@smtp-brevo.com",
-		password: "s7wvHDAQLq0aNckX",
+		username:"7301fd004@smtp-brevo.com",
+		password: "CVP8X4SxDzcnmL95",
 		senderemail:"no-reply@eduDomain.ma",
 		sendername:"EDU DOMAIN",
 		host: "smtp-relay.brevo.com",

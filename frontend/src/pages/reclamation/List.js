@@ -269,10 +269,12 @@ const getStatusColor = (status) => {
                         </CanView>
                     </div>
                     <div className="col-12 md:col-3 " >
-                        <span className="p-input-icon-left w-full">
-                        <i className="pi pi-search" />
-                        <InputText placeholder={$t('search')} className="w-full" value={filters.search.value}  onChange={(e) => setFilterValue('search', e.target.value)} />
-                        </span>
+                        <div className="p-inputgroup flex-1 mb-3">
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-search"></i>
+                            </span>
+                                <InputText placeholder={$t('search')} className="w-full" value={filters.search.value}  onChange={(e) => setFilterValue('search', e.target.value)} />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -310,10 +312,9 @@ const getStatusColor = (status) => {
                                     <Column  field="id_unite_location" header={$t('uniteDeLocation')} body={IdUniteLocationTemplate} sortable={true} ></Column>
                                     <Column  field="id_dossierlocation" header={$t('dossierDeLocation')} body={IdDossierlocationTemplate} sortable={true} ></Column>
                                     <Column  field="user_id" header={$t('user')} body={UserIdTemplate} sortable={true} ></Column>
-									<Dialog header="Flex Scroll" visible={dialogVisible} style={{ width: '75vw' }} maximizable
-                modal contentStyle={{ height: '300px' }} onHide={() => setDialogVisible(false)} footer={dialogFooterTemplate}>
+									
                                     <Column  field="description" header={$t('description')}  sortable={true} ></Column>
-									</Dialog>
+									
                                     <Column  field="date_created" header={$t('dateCreated')} body={DateCreatedTemplate} sortable={true} ></Column>
                                     <Column  field="date_updated" header={$t('dateUpdated')} body={DateUpdatedTemplate} sortable={true} ></Column>
                                     <Column  field="date_resolue" header={$t('dateResolue')}  sortable={true} ></Column>

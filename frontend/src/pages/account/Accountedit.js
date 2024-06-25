@@ -10,11 +10,26 @@ import { PageRequestError } from 'components/PageRequestError';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Uploader } from 'components/Uploader';
 import useApp from 'hooks/useApp';
+import React from 'react';
+import { FileUpload } from 'primereact/fileupload';
 
 import useEditPage from 'hooks/useEditPage';
 const UsersnodeAccounteditPage = (props) => {
 		const app = useApp();
 	const location = useLocation();
+
+    const customBase64Uploader = async (event) => {
+        // convert file to base64 encoded
+        const file = event.files[0];
+        const reader = new FileReader();
+        let blob = await fetch(file.objectURL).then((r) => r.blob()); //blob:url
+
+        reader.readAsDataURL(blob);
+
+        reader.onloadend = function () {
+            const base64data = reader.result;
+        };
+    };
 	// form validation schema
 	const validationSchema = yup.object().shape({
 		username: yup.string().nullable().label($t('username')),
@@ -107,18 +122,19 @@ const UsersnodeAccounteditPage = (props) => {
                                             </div>
                                         </div>
                                     </div>
+                                    
                                     <div className="col-12">
                                         <div className="formgrid grid">
                                             <div className="col-12 md:col-3">
-                                                {$t('userRoleId')} 
+                                                {$t('userRole')} 
                                             </div>
                                             <div className="col-12 md:col-9">
                                                 <DataSource   apiPath="components_data/user_role_id_option_list"  >
                                                     {
                                                     ({ response }) => 
                                                     <>
-                                                    <Dropdown  name="user_role_id"     optionLabel="label" optionValue="value" value={formik.values.user_role_id} onChange={formik.handleChange} options={response} label={$t('userRoleId')}  placeholder={$t('selectAValue')}  className={inputClassName(formik?.errors?.user_role_id)}   />
-                                                    <ErrorMessage name="user_role_id" component="span" className="p-error" />
+                                                    <Dropdown  name="user_role"     optionLabel="label" optionValue="value" value={formik.values.user_role_id} onChange={formik.handleChange} options={response} label={$t('userRole')}  placeholder={$t('selectAValue')}  className={inputClassName(formik?.errors?.user_role_id)}   />
+                                                    <ErrorMessage name="user_role" component="span" className="p-error" />
                                                     </>
                                                     }
                                                 </DataSource>

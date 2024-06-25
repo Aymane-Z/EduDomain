@@ -15,11 +15,49 @@ const Uploader = (props) => {
 	const api = useApi();
 	const localStore = useLocalStore();
 
-	const fileUploadRef = useRef(null);
+	const toast = useRef(null);
 
 	const [uploadedFilePaths, setUploadedFilePaths] = useState([]);
 	const [uploadedFiles, setUploadedFiles] = useState([]);
 	const [disabled, setDisabled] = useState(false);
+
+
+	const [totalSize, setTotalSize] = useState(0);
+    const fileUploadRef = useRef(null);
+    
+    const onTemplateSelect = (e) => {
+        let _totalSize = totalSize;
+        let files = e.files;
+
+        Object.keys(files).forEach((key) => {
+            _totalSize += files[key].size || 0;
+        });
+
+        setTotalSize(_totalSize);
+    };
+
+    const onTemplateUpload = (e) => {
+        let _totalSize = 0;
+
+        e.files.forEach((file) => {
+            _totalSize += file.size || 0;
+        });
+
+        setTotalSize(_totalSize);
+        toast.current.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
+    };
+
+    const onTemplateRemove = (file, callback) => {
+        setTotalSize(totalSize - file.size);
+        callback();
+    };
+
+    const onTemplateClear = () => {
+        setTotalSize(0);
+    };
+
+
+
 
 	useEffect(() => {
 		if (props.value) {
@@ -163,6 +201,18 @@ const Uploader = (props) => {
             </div>
         )
     }
+	const customBase64Uploader = async (event) => {
+        // convert file to base64 encoded
+        const file = event.files[0];
+        const reader = new FileReader();
+        let blob = await fetch(file.objectURL).then((r) => r.blob()); //blob:url
+
+        reader.readAsDataURL(blob);
+
+        reader.onloadend = function () {
+            const base64data = reader.result;
+        };
+    };
 
 
 
@@ -178,13 +228,13 @@ const Uploader = (props) => {
 				maxFileSize={maxFileSizeInBytes}
 				accept={accept}
 				multiple={multiple}
-				mode="advanced"
+				mode="basic"
 				url={getUploadApiUrl()}
 				onBeforeSend={setheaders}
 				onUpload={uploadComplete}
 				onError={uploadError}
 				emptyTemplate={emptyTemplate}
-
+				
 				>
 			</FileUpload>
 			

@@ -215,10 +215,12 @@ const TarificationListPage = (props) => {
                         </CanView>
                     </div>
                     <div className="col-12 md:col-3 " >
-                        <span className="p-input-icon-left w-full">
-                        <i className="pi pi-search" />
-                        <InputText placeholder={$t('search')} className="w-full" value={filters.search.value}  onChange={(e) => setFilterValue('search', e.target.value)} />
-                        </span>
+                        <div className="p-inputgroup flex-1 mb-3">
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-search"></i>
+                            </span>
+                                <InputText placeholder={$t('search')} className="w-full" value={filters.search.value}  onChange={(e) => setFilterValue('search', e.target.value)} />
+                        </div>
                     </div>
                 </div>
             </div>

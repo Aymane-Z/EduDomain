@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import DB from '../models/db.js';
-
+import utils from '../helpers/utils.js';
 
 const router = Router();
 
@@ -892,6 +892,79 @@ router.get('/id_chambre_option_list_2', async (req, res) => {
 		return res.ok(records);
 	}
 	catch(err){
+		return res.serverError(err);
+	}
+});
+ /**
+ * Route to get piechart_etatsdesunits records
+ * @GET /components_data/piechart_etatsdesunits
+ */
+ router.get('/piechart_etatsdesunits', async (req, res) => {
+    let chartData = { labels: [], datasets: [] };
+    try {
+        let sqltext = `SELECT COUNT(unitelocationdetails.id) AS count_of_id, etat_unite.etat FROM etat_unite JOIN unitelocationdetails ON etat_unite.id_unitelocation=unitelocationdetails.id WHERE (etat_unite.dt_fin_etat ="0000-00-00" ) OR (etat_unite.dt_fin_etat is NULL ) GROUP BY etat_unite.etat;`;
+
+        let records = await DB.rawQueryList(sqltext);
+        chartData['labels'] = records.map(function(v) { return v.etat });
+
+        let backgroundColors = records.map(function(_, index) {
+            return utils.randomColor(); 
+        });
+
+        let dataset1 = {
+            data: records.map(function(v) { return parseFloat(v.count_of_id) }),
+            label: "Nombre",
+            backgroundColor: backgroundColors,
+            borderColor: backgroundColors, 
+            borderWidth: "2",
+        };
+
+        chartData.datasets.push(dataset1);
+        return res.ok(chartData);
+    } catch (err) {
+        return res.serverError(err);
+    }
+});
+
+router.get('/occupancy_rate', async (req, res) => {
+    
+	let chartData = { labels:[], datasets:[] };
+	try{
+		let sqltext = `SELECT 
+        r.id AS residence_id,
+        r.denomination AS residence_name,
+        COUNT(ul.id) AS total_units,
+        SUM(CASE WHEN e.etat = 'Affectée' THEN 1 ELSE 0 END) AS occupied_units
+    FROM 
+        residence r
+    JOIN 
+        unitelocationdetails ul ON ul.id_residence = r.id
+    LEFT JOIN 
+        etat_unite e ON e.id_unitelocation = ul.id AND (e.dt_fin_etat = "0000-00-00" OR e.dt_fin_etat IS NULL)
+    GROUP BY 
+        r.id;` ;
+		
+		let records = await DB.rawQueryList(sqltext);
+		chartData['labels'] = records.map(function(v){ return v.residence_name });
+		let dataset1 = {
+			data: records.map(function(v){ return parseFloat(v.total_units) }),
+			label: "Nombre d'unités",
+			backgroundColor: utils.randomColor(), 
+			//borderColor: utils.randomColor(), 
+			borderWidth: "2",
+		};
+		chartData.datasets.push(dataset1);
+		let dataset2 = {
+			data: records.map(function(v){ return parseFloat(v.occupied_units) }),
+			label: "Unités affectées",
+			backgroundColor: utils.randomColor(), 
+			//borderColor: utils.randomColor(), 
+			borderWidth: "2",
+		};
+		chartData.datasets.push(dataset2);
+		return res.ok(chartData) ;
+	}
+	catch(err) {
 		return res.serverError(err);
 	}
 });
