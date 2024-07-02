@@ -4,7 +4,7 @@
 
 EduDomain est une application web conçue pour simplifier la gestion des résidences universitaires. Développée avec Node.js et React.js utilisant PrimeReact, elle offre une solution robuste pour gérer les demandes de logement, la facturation et les interactions avec les résidents.
 
-![alt text](frontend/public/favicon.png)
+![alt text](frontend/public/favicon100.png)
 
 ## Fonctionnalités
 
